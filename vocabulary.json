@@ -6,7 +6,7 @@
         "Closed": 1
     },
     "Submitted": {
-        "Submitted": 0.0,
+        "Submitted": 0.05,
         "Backlog": 0.5,
         "In Progress": 0.2,
         "Under Code Review": 0.05,
@@ -14,12 +14,12 @@
         "QE Review": 0.05,
         "PO Review": 0.05,
         "Ready for Merge": 0.0,
-        "Closed": 0.1
+        "Closed": 0.05
     },
     "Backlog": {
         "Submitted": 0.05,
-        "Backlog": 0.0,
-        "In Progress": 0.6,
+        "Backlog": 0.1,
+        "In Progress": 0.5,
         "Under Code Review": 0.05,
         "Code Complete": 0.05,
         "QE Review": 0.05,
@@ -30,8 +30,8 @@
     "In Progress": {
         "Submitted": 0.05,
         "Backlog": 0.05,
-        "In Progress": 0.0,
-        "Under Code Review": 0.6,
+        "In Progress": 0.05,
+        "Under Code Review": 0.55,
         "Code Complete": 0.05,
         "QE Review": 0.05,
         "PO Review": 0.05,
@@ -41,8 +41,8 @@
     "Under Code Review": {
         "Submitted": 0.05,
         "Backlog": 0.05,
-        "In Progress": 0.6,
-        "Under Code Review": 0.0,
+        "In Progress": 0.55,
+        "Under Code Review": 0.05,
         "Code Complete": 0.05,
         "QE Review": 0.05,
         "PO Review": 0.05,
@@ -53,8 +53,8 @@
         "Submitted": 0.05,
         "Backlog": 0.05,
         "In Progress": 0.15,
-        "Under Code Review": 0.3,
-        "Code Complete": 0.0,
+        "Under Code Review": 0.25,
+        "Code Complete": 0.05,
         "QE Review": 0.3,
         "PO Review": 0.05,
         "Ready for Merge": 0.05,
@@ -63,10 +63,10 @@
     "QE Review": {
         "Submitted": 0.05,
         "Backlog": 0.05,
-        "In Progress": 0.2,
+        "In Progress": 0.15,
         "Under Code Review": 0.2,
         "Code Complete": 0.2,
-        "QE Review": 0.0,
+        "QE Review": 0.05,
         "PO Review": 0.2,
         "Ready for Merge": 0.05,
         "Closed": 0.05
