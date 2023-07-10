@@ -1,4 +1,5 @@
 const fs = require("fs");
+const path = require("path")
 
 function saveToSQL(filename, data, tableName) {
   if (!Array.isArray(data) || data.length === 0) {
@@ -26,7 +27,7 @@ function saveToSQL(filename, data, tableName) {
     statements.push(sql);
   }
 
-  fs.writeFileSync(filename, statements.join("\n"));
+  createDirAndWriteFile(filename, statements.join("\n"));
 }
 
 function saveToCSV(filename, data) {
@@ -36,7 +37,15 @@ function saveToCSV(filename, data) {
     .map((row) => headers.map((header) => row[header]).join(","))
     .join("\n");
   const csv = headerRow + dataRows;
-  fs.writeFileSync(filename, csv);
+  createDirAndWriteFile(filename, csv);
+}
+
+function createDirAndWriteFile(filename, data) {
+  const dir = path.dirname(filename)
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+  fs.writeFileSync(filename, data);
 }
 
 module.exports = { saveToSQL, saveToCSV };

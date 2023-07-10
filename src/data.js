@@ -2,6 +2,7 @@ const { faker } = require("@faker-js/faker");
 const moment = require("moment");
 const { getRandomString, getVocabulary } = require("./vocabulary");
 const { config } = require("./config");
+const { showProgress } = require("./progress")
 
 function generateTicketsData(numTickets) {
   const tickets = [];
@@ -32,8 +33,15 @@ function generateTicketsData(numTickets) {
     };
 
     tickets.push(ticket);
+    if (config.SHOW_PROGRESS && i % config.PROGRESS_INTERVAL == 0) {
+      showProgress(i/numTickets*100, text = "Generating tickets")
+    }
   }
-
+  
+  if (config.SHOW_PROGRESS) {
+    showProgress(100, text = "Generating tickets")
+    process.stdout.write("\n")
+  }
   return tickets;
 }
 
@@ -41,12 +49,15 @@ function generateTransitionsData(tickets) {
   const initialEvent = getVocabulary().initialEvent;
   const finalEvent = getVocabulary().finalEvent;
   const transitions = [];
+  const numTickets = tickets.length
 
+  let ticketNumber = 0;
   for (const ticket of tickets) {
     const numTransitions = faker.number.int({
       min: config.MIN_EVENTS,
       max: config.MAX_EVENTS,
     });
+    ticketNumber++;
 
     const startDate = faker.date.past({ years: config.TIMEFRAME_IN_YEARS });
     let currentDate = moment(startDate);
@@ -93,8 +104,14 @@ function generateTransitionsData(tickets) {
         }),
       });
     }
+    if (config.SHOW_PROGRESS && ticketNumber % config.PROGRESS_INTERVAL == 0) {
+      showProgress(ticketNumber/numTickets*100, text = "Generating transitions")
+    }
   }
-
+  if (config.SHOW_PROGRESS) {
+    showProgress(1*100, text = "Generating transitions")
+    process.stdout.write("\n")
+  }
   return transitions;
 }
 

@@ -12,6 +12,8 @@ const config = {
   MAX_HOURS_BETWEEN_EVENTS: 3,
   MIN_MINUTES_BETWEEN_EVENTS: 1,
   MAX_MINUTES_BETWEEN_EVENTS: 3,
+  SHOW_PROGRESS: true,
+  PROGRESS_INTERVAL: 1100,
 };
 
 function loadAndSetUserConfigurations() {
@@ -24,31 +26,36 @@ function loadAndSetUserConfigurations() {
 
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
+    const nextArg = args[i + 1];
 
     if (arg === "-cases" && i + 1 < args.length) {
-      config.NUMBER_OF_CASES = parseFloat(args[i + 1]);
+      config.NUMBER_OF_CASES = parseFloat(nextArg);
     } else if (arg === "-timeframe" && i + 1 < args.length) {
-      config.TIMEFRAME_IN_YEARS = parseFloat(args[i + 1]);
+      config.TIMEFRAME_IN_YEARS = parseFloat(nextArg);
     } else if (arg === "-format" && i + 1 < args.length) {
-      config.OUTPUT_FORMAT = args[i + 1].toLowerCase();
+      config.OUTPUT_FORMAT = nextArg.toLowerCase();
     } else if (arg === "-sqlbatchsize" && i + 1 < args.length) {
-      config.BATCH_SIZE_INSERT_SQL = parseFloat(args[i + 1]);
+      config.BATCH_SIZE_INSERT_SQL = parseFloat(nextArg);
     } else if (arg === "-minevents" && i + 1 < args.length) {
-      config.MIN_EVENTS = parseFloat(args[i + 1]);
+      config.MIN_EVENTS = parseFloat(nextArg);
     } else if (arg === "-maxevents" && i + 1 < args.length) {
-      config.MAX_EVENTS = parseFloat(args[i + 1]);
+      config.MAX_EVENTS = parseFloat(nextArg);
     } else if (arg === "-mindays" && i + 1 < args.length) {
-      config.MIN_DAYS_BETWEEN_EVENTS = parseFloat(args[i + 1]);
+      config.MIN_DAYS_BETWEEN_EVENTS = parseFloat(nextArg);
     } else if (arg === "-maxdays" && i + 1 < args.length) {
-      config.MAX_DAYS_BETWEEN_EVENTS = parseFloat(args[i + 1]);
+      config.MAX_DAYS_BETWEEN_EVENTS = parseFloat(nextArg);
     } else if (arg === "-minhours" && i + 1 < args.length) {
-      config.MIN_HOURS_BETWEEN_EVENTS = parseFloat(args[i + 1]);
+      config.MIN_HOURS_BETWEEN_EVENTS = parseFloat(nextArg);
     } else if (arg === "-maxhours" && i + 1 < args.length) {
-      config.MAX_HOURS_BETWEEN_EVENTS = parseFloat(args[i + 1]);
+      config.MAX_HOURS_BETWEEN_EVENTS = parseFloat(nextArg);
     } else if (arg === "-minminutes" && i + 1 < args.length) {
-      config.MIN_MINUTES_BETWEEN_EVENTS = parseFloat(args[i + 1]);
+      config.MIN_MINUTES_BETWEEN_EVENTS = parseFloat(nextArg);
     } else if (arg === "-maxminutes" && i + 1 < args.length) {
-      config.MAX_MINUTES_BETWEEN_EVENTS = parseFloat(args[i + 1]);
+      config.MAX_MINUTES_BETWEEN_EVENTS = parseFloat(nextArg);
+    } else if (arg === "-progress" && i + 1 < args.length) {
+      config.SHOW_PROGRESS = (nextArg.toLowerCase() == "true")
+    } else if (arg === "-progressinterval" && i + 1 < args.length) {
+      config.PROGRESS_INTERVAL = parseFloat(nextArg)
     }
   }
 }
@@ -56,7 +63,7 @@ function loadAndSetUserConfigurations() {
 function printHelp() {
   console.log("\nUsage:");
   console.log(
-    "node app.js -cases [value] -timeframe [value] -format [value] -sqlbatchsize [value] -minevents [value] -maxevents [value] -mindays [value] -maxdays [value] -minhours [value] -maxhours [value] -minminutes [value] -maxminutes [value]\n"
+    "node app.js -cases [value] -timeframe [value] -format [value] -sqlbatchsize [value] -minevents [value] -maxevents [value] -mindays [value] -maxdays [value] -minhours [value] -maxhours [value] -minminutes [value] -maxminutes [value] -progress [value] -progressinterval [value]\n"
   );
   console.log(
     `-cases: The number of cases to generate. (Default: ${config.NUMBER_OF_CASES})`
@@ -93,6 +100,12 @@ function printHelp() {
   );
   console.log(
     `-maxminutes: The maximum number of minutes between events. (Default: ${config.MAX_MINUTES_BETWEEN_EVENTS})`
+  );
+  console.log(
+    `-progress: Enable/Disable a progress indicator. (Default: ${config.SHOW_PROGRESS})`
+  );
+  console.log(
+    `-progressinterval: How often to update the progress indicator. A value of 100 means that every 100 cases it updates the progress indicator. (Default: ${config.PROGRESS_INTERVAL})`
   );
   console.log("\n");
 }
