@@ -1,4 +1,179 @@
 {
+    "__schema__": {
+        "cases": {
+            "table_name": "tickets",
+            "columns": [
+                {
+                    "name": "id",
+                    "display_name": "TicketID",
+                    "type": "integer",
+                    "primary_key": true,
+                    "auto_increment": true
+                },
+                {
+                    "name": "assignee",
+                    "display_name": "Assignee",
+                    "type": "varchar(50)",
+                    "nullable": true
+                },
+                {
+                    "name": "project",
+                    "display_name": "Project",
+                    "type": "varchar(50)",
+                    "nullable": true
+                },
+                {
+                    "name": "label",
+                    "display_name": "Label",
+                    "type": "varchar(50)",
+                    "nullable": true
+                },
+                {
+                    "name": "component",
+                    "display_name": "Component",
+                    "type": "varchar(50)",
+                    "nullable": true
+                },
+                {
+                    "name": "priority",
+                    "display_name": "Priority",
+                    "type": "varchar(50)",
+                    "nullable": true
+                },
+                {
+                    "name": "story_points",
+                    "display_name": "StoryPoints",
+                    "type": "integer",
+                    "nullable": true
+                },
+                {
+                    "name": "issue_type",
+                    "display_name": "IssueType",
+                    "type": "varchar(50)",
+                    "nullable": true
+                },
+                {
+                    "name": "sprint",
+                    "display_name": "Sprint",
+                    "type": "varchar(50)",
+                    "nullable": true
+                },
+                {
+                    "name": "team",
+                    "display_name": "Team",
+                    "type": "varchar(50)",
+                    "nullable": true
+                },
+                {
+                    "name": "resolution",
+                    "display_name": "Resolution",
+                    "type": "varchar(50)",
+                    "nullable": true
+                },
+                {
+                    "name": "impact_area",
+                    "display_name": "ImpactArea",
+                    "type": "varchar(50)",
+                    "nullable": true
+                },
+                {
+                    "name": "type",
+                    "display_name": "Type",
+                    "type": "varchar(50)",
+                    "nullable": true
+                },
+                {
+                    "name": "status",
+                    "display_name": "Status",
+                    "type": "varchar(50)",
+                    "nullable": true
+                },
+                {
+                    "name": "incident",
+                    "display_name": "Incident",
+                    "type": "varchar(50)",
+                    "nullable": true
+                },
+                {
+                    "name": "customer_type",
+                    "display_name": "CustomerType",
+                    "type": "varchar(50)",
+                    "nullable": true
+                },
+                {
+                    "name": "customer_impact",
+                    "display_name": "CustomerImpact",
+                    "type": "varchar(50)",
+                    "nullable": true
+                },
+                {
+                    "name": "customer_environment",
+                    "display_name": "CustomerEnvironment",
+                    "type": "varchar(50)",
+                    "nullable": true
+                },
+                {
+                    "name": "required_on_call",
+                    "display_name": "RequiredOnCall",
+                    "type": "varchar(50)",
+                    "nullable": true
+                },
+                {
+                    "name": "needs_customer_update",
+                    "display_name": "NeedsCustomerUpdate",
+                    "type": "varchar(50)",
+                    "nullable": true
+                },
+                {
+                    "name": "needs_postmortem",
+                    "display_name": "NeedsPostmortem",
+                    "type": "varchar(50)",
+                    "nullable": true
+                }
+            ]
+        },
+        "events": {
+            "table_name": "ticket_events",
+            "columns": [
+                {
+                    "name": "id",
+                    "display_name": "ID",
+                    "type": "integer",
+                    "primary_key": true,
+                    "auto_increment": true
+                },
+                {
+                    "name": "ticket_id",
+                    "display_name": "TicketId",
+                    "type": "integer",
+                    "foreign_key": {
+                        "table": "tickets",
+                        "column": "id"
+                    }
+                },
+                {
+                    "name": "status",
+                    "display_name": "Status",
+                    "type": "varchar(50)",
+                    "nullable": true,
+                    "event_action": true
+                },
+                {
+                    "name": "date",
+                    "display_name": "Date",
+                    "type": "date",
+                    "nullable": true,
+                    "event_date": true
+                },
+                {
+                    "name": "actor",
+                    "display_name": "Actor",
+                    "type": "varchar(50)",
+                    "nullable": true
+                }
+            ]
+        }
+    },
     "__initial_event__": {
         "Submitted": 1
     },
@@ -522,5 +697,22 @@
         "On Software Bugs": 0.01,
         "On User Errors": 0.01,
         "Never": 0.01
-      }      
+    },
+    "ASSIGNEE": {
+        "johnsmith1987": 0.28,
+        "emily_jones": 0.22,
+        "davidmiller": 0.15,
+        "sarahwilson": 0.10,
+        "michaelbrown": 0.08,
+        "laurajohnson": 0.06,
+        "alex_thompson": 0.05,
+        "amandaroberts": 0.04,
+        "jason_davis": 0.03,
+        "olivia_moore": 0.02,
+        "ryan_walker": 0.02,
+        "katherine_clark": 0.02,
+        "matthew_wright": 0.01,
+        "natalie_harris": 0.01,
+        "william_martin": 0.01
+    }
 }

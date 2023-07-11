@@ -14,6 +14,7 @@ const config = {
   MAX_MINUTES_BETWEEN_EVENTS: 3,
   SHOW_PROGRESS: true,
   PROGRESS_INTERVAL: 1100,
+  FILE_NAME_PREFIX: "Cases"
 };
 
 function loadAndSetUserConfigurations() {
@@ -56,6 +57,8 @@ function loadAndSetUserConfigurations() {
       config.SHOW_PROGRESS = (nextArg.toLowerCase() == "true")
     } else if (arg === "-progressinterval" && i + 1 < args.length) {
       config.PROGRESS_INTERVAL = parseFloat(nextArg)
+    } else if (arg === "-prefix" && i + 1 < args.length) {
+      config.FILE_NAME_PREFIX = nextArg;
     }
   }
 }
@@ -106,6 +109,9 @@ function printHelp() {
   );
   console.log(
     `-progressinterval: How often to update the progress indicator. A value of 100 means that every 100 cases it updates the progress indicator. (Default: ${config.PROGRESS_INTERVAL})`
+  );
+  console.log(
+    `-prefix: The prefix for the name of the generated files. (Default: ${config.FILE_NAME_PREFIX})`
   );
   console.log("\n");
 }

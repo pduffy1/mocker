@@ -1,14 +1,22 @@
 const fs = require("fs");
 
 const _vocabulary = {
-  randomStrings: {}
+  schema: {},
+  randomStrings: {},
+  cases: null,
+  events: null
 };
 
 function processVocabulary() {
-  const events = parseVocabulary();
+  const items = parseVocabulary();
 
-  for (const event in events) {
-    const transitions = events[event];
+  for (const key in items) {
+    if (key === "__schema__") {
+      parseSchema(items["__schema__"]);
+      continue;
+    }
+
+    const transitions = items[key];
     const parsedTransitions = [];
 
     for (const nextEvent in transitions) {
@@ -16,13 +24,17 @@ function processVocabulary() {
       parsedTransitions.push({ string: nextEvent, weight: weight });
     }
 
-    randomizeWithWeights(event, parsedTransitions);
+    randomizeWithWeights(key, parsedTransitions);
   }
 
   _vocabulary.initialEvent = getRandomString("__initial_event__");
   _vocabulary.finalEvent = getRandomString("__final_event__");
 
   return _vocabulary;
+}
+
+function parseSchema(schema) {
+  _vocabulary.schema = schema;
 }
 
 function randomizeWithWeights(key, stringsWithWeights) {
@@ -36,13 +48,14 @@ function randomizeWithWeights(key, stringsWithWeights) {
     values.push(string);
   }
 
-  _vocabulary.randomStrings[key] = {
+  _vocabulary.randomStrings[key.toLowerCase()] = {
     weight: cumulativeWeights,
     values,
   };
 }
 
 function getRandomString(key) {
+  key = key.toLowerCase();
   if (!_vocabulary.randomStrings[key]) {
     if (key === _vocabulary.finalEvent) {
       return _vocabulary.finalEvent;
@@ -53,7 +66,9 @@ function getRandomString(key) {
   }
 
   const randomNum = Math.random();
-  const index = _vocabulary.randomStrings[key].weight.findIndex((cp) => randomNum <= cp);
+  const index = _vocabulary.randomStrings[key].weight.findIndex(
+    (cp) => randomNum <= cp
+  );
 
   if (index === -1) {
     return _vocabulary.randomStrings[key].values[0];
