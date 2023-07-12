@@ -1,8 +1,8 @@
 const { loadAndSetUserConfigurations, config } = require('./config');
 const { processVocabulary } = require('./vocabulary');
 const { generateCases, generateEvents } = require('./data');
-const { saveToCSV, saveToSQL, saveSqlSchema } = require('./output');
-const { generateSchemaSql } = require('./sql_generator');
+const { saveToCSV, writeFile } = require('./output');
+const { generateSchemaSql, generateSqlInsert } = require('./sql_generator');
 const util = require('./util');
 const pluralize = require('pluralize');
 
@@ -22,9 +22,13 @@ async function main() {
     saveToCSV(`out/${fileNameForEvents(events.length)}.csv`, events);
   } else if (config.OUTPUT_FORMAT === 'sql') {
     let schema = generateSchemaSql(vocabulary.schema);
-    saveSqlSchema('out/schema.sql', schema);
+    writeFile('out/schema.sql', schema);
     
-    saveToSQL(`out/${fileNameForCases()}.sql`, cases, 'TICKETS');
+    let sqlInsertsCases = generateSqlInsert(cases, vocabulary.schema.cases);
+    writeFile(`out/${fileNameForCases()}.sql`, sqlInsertsCases);
+
+    let sqlInsertsEvents = generateSqlInsert(events, vocabulary.schema.events);
+    writeFile(`out/${fileNameForEvents(events.length)}.sql`, sqlInsertsEvents);
   } else {
     throw new Error(
       `Invalid format: "${config.OUTPUT_FORMAT}". To see a list of valid formats, please rerun with the -help option`

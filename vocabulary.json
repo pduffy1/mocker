@@ -161,7 +161,7 @@
                 {
                     "name": "date",
                     "display_name": "Date",
-                    "type": "date",
+                    "type": "datetime",
                     "nullable": true,
                     "event_date": true
                 },
