@@ -1,7 +1,7 @@
 {
     "__schema__": {
         "cases": {
-            "table_name": "tickets",
+            "table_name": "jira_tickets",
             "columns": [
                 {
                     "name": "id",
@@ -133,7 +133,7 @@
             ]
         },
         "events": {
-            "table_name": "ticket_events",
+            "table_name": "jira_ticket_events",
             "columns": [
                 {
                     "name": "id",
