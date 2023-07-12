@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const { config } = require('./config');
+const { config } = require("./config");
 
 function saveToSQL(filename, data, tableName) {
   if (!Array.isArray(data) || data.length === 0) {
@@ -37,16 +37,17 @@ function saveSqlSchema(filename, sql) {
 
 function saveToCSV(filename, data) {
   const headers = Object.keys(data[0]);
-  const headerRow = headers.join(",") + "\n";
+  const filteredHeaders = headers.filter((header) => !header.startsWith("_"));
+  const headerRow = filteredHeaders.join(",") + "\n";
   const dataRows = data
-    .map((row) => headers.map((header) => row[header]).join(","))
+    .map((row) => filteredHeaders.map((header) => row[header]).join(","))
     .join("\n");
   const csv = headerRow + dataRows;
   writeFile(filename, csv);
 }
 
 function writeFile(filename, data) {
-  const dir = path.dirname(filename)
+  const dir = path.dirname(filename);
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
   }
