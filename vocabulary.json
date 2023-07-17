@@ -146,17 +146,22 @@
                     "name": "ticket_id",
                     "display_name": "TicketId",
                     "type": "integer",
+                    "is_case_id": true,
                     "foreign_key": {
-                        "table": "tickets",
+                        "table": "jira_tickets",
                         "column": "id"
                     }
                 },
                 {
-                    "name": "status",
-                    "display_name": "Status",
-                    "type": "varchar(50)",
+                    "name": "event_type",
+                    "display_name": "EventType",
+                    "type": "integer",
                     "nullable": true,
-                    "event_action": true
+                    "event_action": true,
+                    "foreign_key": {
+                        "table": "jira_ticket_event_status",
+                        "column": "id"
+                    }
                 },
                 {
                     "name": "date",
@@ -168,11 +173,63 @@
                 {
                     "name": "actor",
                     "display_name": "Actor",
+                    "type": "integer",
+                    "nullable": true,
+                    "foreign_key": {
+                        "table": "jira_ticket_actor",
+                        "column": "id"
+                    }
+                },
+                {
+                    "name": "assignee",
+                    "display_name": "Assignee",
                     "type": "varchar(50)",
                     "nullable": true
                 }
             ]
-        }
+        },
+        "data": [
+            {
+                "table_name": "jira_ticket_event_status",
+                "lookup_for": "event_type",
+                "columns": [
+                    {
+                        "name": "id",
+                        "display_name": "ID",
+                        "type": "integer",
+                        "primary_key": true,
+                        "auto_increment": true
+                    },
+                    {
+                        "name": "status",
+                        "display_name": "Status",
+                        "type": "varchar(50)",
+                        "nullable": true,
+                        "is_lookup": true
+                    }
+                ]
+            },
+            {
+                "table_name": "jira_ticket_actor",
+                "lookup_for": "actor",
+                "columns": [
+                    {
+                        "name": "id",
+                        "display_name": "ID",
+                        "type": "integer",
+                        "primary_key": true,
+                        "auto_increment": true
+                    },
+                    {
+                        "name": "actor",
+                        "display_name": "Actor",
+                        "type": "varchar(50)",
+                        "nullable": true,
+                        "is_lookup": true
+                    }
+                ]
+            }
+        ]
     },
     "__initial_event__": {
         "Submitted": 1
@@ -714,5 +771,16 @@
         "matthew_wright": 0.01,
         "natalie_harris": 0.01,
         "william_martin": 0.01
+    },
+    "EVENT_TYPE": {
+        "Submitted": 0.0,
+        "Backlog": 0.05,
+        "In Progress": 0.05,
+        "Under Code Review": 0.05,
+        "Code Complete": 0.05,
+        "QE Review": 0.05,
+        "PO Review": 0.05,
+        "Ready for Merge": 0.0,
+        "Closed": 0.7
     }
 }

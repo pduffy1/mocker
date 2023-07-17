@@ -21,14 +21,7 @@ async function main() {
     saveToCSV(`out/${fileNameForCases()}.csv`, cases);
     saveToCSV(`out/${fileNameForEvents(events.length)}.csv`, events);
   } else if (config.OUTPUT_FORMAT === 'sql') {
-    let schema = generateSchemaSql(vocabulary.schema);
-    writeFile('out/schema.sql', schema);
-    
-    let sqlInsertsCases = generateSqlInsert(cases, vocabulary.schema.cases);
-    writeFile(`out/${fileNameForCases()}.sql`, sqlInsertsCases);
-
-    let sqlInsertsEvents = generateSqlInsert(events, vocabulary.schema.events);
-    writeFile(`out/${fileNameForEvents(events.length)}.sql`, sqlInsertsEvents);
+    saveToSql(vocabulary, cases, events);
   } else {
     throw new Error(
       `Invalid format: "${config.OUTPUT_FORMAT}". To see a list of valid formats, please rerun with the -help option`
@@ -39,6 +32,48 @@ async function main() {
   }
 }
 
+function saveToSql(vocabulary, cases, events) {
+  let combinedFile = '';
+
+  const schema = generateSchemaSql(vocabulary.schema);
+  writeFile('out/schema.sql', schema);
+  combinedFile += schema + '\n\n';
+
+
+  //"Lookup data"
+  if (vocabulary.data) {
+    for (const table in vocabulary.data) {
+      const data = [];
+      for (const [name, id] of Object.entries(vocabulary.data[table])) {
+        data.push({
+          id,
+          name,
+        });
+      }
+
+      const sqlInsertsData = generateSqlInsert(data, vocabulary.schema.data.find(e => e.lookup_for == table));
+      writeFile(`out/${fileNameForData(table)}.sql`, sqlInsertsData);
+      combinedFile += sqlInsertsData + '\n\n';
+    }
+  }
+
+  const sqlInsertsCases = generateSqlInsert(cases, vocabulary.schema.cases);
+  writeFile(`out/${fileNameForCases()}.sql`, sqlInsertsCases);
+  combinedFile += sqlInsertsCases + '\n\n';
+
+  const sqlInsertsEvents = generateSqlInsert(events, vocabulary.schema.events);
+  writeFile(`out/${fileNameForEvents(events.length)}.sql`, sqlInsertsEvents);
+  combinedFile += sqlInsertsEvents + '\n\n';
+
+
+  writeFile(`out/${fileNameForCombined()}.sql`, combinedFile);
+}
+
+function fileNameForCombined() {
+  const prefix = pluralize.plural(config.FILE_NAME_PREFIX);
+  return `${prefix}-${util.formatNumber(config.NUMBER_OF_CASES)}-all`
+}
+
 function fileNameForCases() {
   const prefix = pluralize.plural(config.FILE_NAME_PREFIX);
   return `${prefix}-${util.formatNumber(config.NUMBER_OF_CASES)}`
@@ -47,6 +82,11 @@ function fileNameForCases() {
 function fileNameForEvents(numOfEvents) {
   const prefix = pluralize.singular(config.FILE_NAME_PREFIX);
   return `${prefix}Events-${util.formatNumber(numOfEvents)}`
+}
+
+function fileNameForData(name) {
+  const prefix = pluralize.plural(name);
+  return `${prefix}`
 }
 
 main().catch((error) => console.error(error));

@@ -6,8 +6,7 @@ function generateSqlInsert(data, schema) {
     throw new Error("Data array must be a non-empty array.");
   }
 
-  const columnsDisplayNames = Object.keys(data[0]),
-    columnsMap = extractColumnsAsMap(schema.columns),
+  const columnsList = extractColumnsAsList(schema.columns),
     statements = [],
     tableName = schema.table_name;
 
@@ -26,10 +25,7 @@ function generateSqlInsert(data, schema) {
       return `(${values.join(", ")})\n`;
     });
 
-    const columns = columnsFromMap(columnsMap, columnsDisplayNames);
-    const sql = `INSERT INTO ${tableName} (${columns.join(
-      ", "
-    )})\n VALUES ${valueSets.join(", ")};`;
+    const sql = `INSERT INTO ${tableName} (${columnsList.join(", ")})\n VALUES ${valueSets.join(", ")};`;
     statements.push(sql);
   }
 
@@ -76,7 +72,21 @@ function generateSchemaSql(schema) {
   let sql = "";
 
   sql += generateDropTableSql(schema.events);
-  sql += generateDropTableSql(schema.cases) + "\n";
+  sql += generateDropTableSql(schema.cases);
+
+  if (schema.data) {
+    for (const table of schema.data) {
+      sql += generateDropTableSql(table);
+    }
+  }
+
+  sql += "\n";
+
+  if (schema.data) {
+    for (const table of schema.data) {
+      sql += generateTableSql(table);
+    }
+  }
 
   sql += generateTableSql(schema.cases);
   sql += generateTableSql(schema.events);
@@ -84,15 +94,14 @@ function generateSchemaSql(schema) {
   return sql;
 }
 
-function extractColumnsAsMap(columns) {
-  const map = {};
+function extractColumnsAsList(columns) {
+  const list = [];
 
   for (const column of columns) {
-    const { display_name, name } = column;
-    map[display_name] = name;
+    list.push(column.name);
   }
 
-  return map;
+  return list;
 }
 
 function columnsFromMap(columnsMap, displayNames) {

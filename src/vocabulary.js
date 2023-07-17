@@ -2,6 +2,7 @@ const fs = require("fs");
 
 const _vocabulary = {
   schema: {},
+  data: {},
   randomStrings: {},
   cases: null,
   events: null
@@ -12,7 +13,7 @@ function processVocabulary() {
 
   for (const key in items) {
     if (key === "__schema__") {
-      parseSchema(items["__schema__"]);
+      _vocabulary.schema = items["__schema__"];
       continue;
     }
 
@@ -30,11 +31,35 @@ function processVocabulary() {
   _vocabulary.initialEvent = getRandomString("__initial_event__");
   _vocabulary.finalEvent = getRandomString("__final_event__");
 
+  parseSchema(items["__schema__"]);
+
   return _vocabulary;
 }
 
 function parseSchema(schema) {
-  _vocabulary.schema = schema;
+  //Vocabulary data stored in a Lookup table
+  if (schema.data) {
+    for (const table of schema.data) {
+      let id = 1;
+      for (const column of table.columns) {
+        //There can be at most a single column configured with is_lookup=true
+        if (column.is_lookup) {
+          _vocabulary.data[table.lookup_for] = {};
+          
+          const data = _vocabulary.randomStrings[table.lookup_for];
+          if (!data) {
+            throw new Error(
+              `Missing key: "${table.lookup_for}". Please ensure that your configuration of attributes and events contains an entry for "${table.lookup_for}"`
+            );
+          }
+
+          for (const item of data.values) {
+            _vocabulary.data[table.lookup_for][item] = id++;
+          }
+        }
+      }      
+    }
+  }
 }
 
 function randomizeWithWeights(key, stringsWithWeights) {

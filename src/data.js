@@ -70,14 +70,16 @@ function generateEvents(cases) {
       vocabulary.schema.events.columns.forEach((field) => {
         if (field.primary_key) {
           event[field.display_name] = event._id = eventId++;
-        } else if (field.foreign_key) {
+        } else if (field.is_case_id) {
           event[field.display_name] = caseRecord._id;
         } else if (field.event_action) {
-          event[field.display_name] = eventName;
+          event[field.display_name] = field.foreign_key ? valueToForeignKey(eventName, field.name) : eventName;
         } else if (field.event_date) {
           event[field.display_name] = currentDate.format(
             "YYYY-MM-DD HH:mm:ss.SSS"
           );
+        } else if (field.foreign_key) {
+          event[field.display_name] = valueToForeignKey(getRandomString(field.name), field.name);
         } else {
           event[field.display_name] = getRandomString(field.name);
         }
@@ -114,6 +116,11 @@ function generateEvents(cases) {
     process.stdout.write("\n");
   }
   return transitions;
+}
+
+function valueToForeignKey(value, table) {
+  const vocabulary = getVocabulary();
+  return vocabulary.data[table][value];
 }
 
 module.exports = { generateCases, generateEvents };
