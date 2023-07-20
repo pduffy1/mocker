@@ -14,7 +14,8 @@ const config = {
   MAX_MINUTES_BETWEEN_EVENTS: 3,
   SHOW_PROGRESS: true,
   PROGRESS_INTERVAL: 1100,
-  FILE_NAME_PREFIX: "Cases"
+  FILE_NAME_PREFIX: "Cases",
+  INCLUDE_RECORD_COUNT_IN_FILE_NAME: true
 };
 
 function loadAndSetUserConfigurations() {
@@ -59,7 +60,9 @@ function loadAndSetUserConfigurations() {
       config.PROGRESS_INTERVAL = parseFloat(nextArg)
     } else if (arg === "-prefix" && i + 1 < args.length) {
       config.FILE_NAME_PREFIX = nextArg;
-    }
+    } else if (arg === "-verbosename" && i + 1 < args.length) {
+      config.INCLUDE_RECORD_COUNT_IN_FILE_NAME = (nextArg.toLowerCase() == "true")
+    } 
   }
 }
 
@@ -112,6 +115,10 @@ function printHelp() {
   );
   console.log(
     `-prefix: The prefix for the name of the generated files. (Default: ${config.FILE_NAME_PREFIX})`
+  );
+
+  console.log(
+    `-verbosename: Whether to include the record count in the "-all" file name. (Default: ${config.INCLUDE_RECORD_COUNT_IN_FILE_NAME})`
   );
   console.log("\n");
 }

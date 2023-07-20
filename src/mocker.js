@@ -71,7 +71,8 @@ function saveToSql(vocabulary, cases, events) {
 
 function fileNameForCombined() {
   const prefix = pluralize.plural(config.FILE_NAME_PREFIX);
-  return `${prefix}-${util.formatNumber(config.NUMBER_OF_CASES)}-all`
+  const count = config.INCLUDE_RECORD_COUNT_IN_FILE_NAME ? `-${util.formatNumber(config.NUMBER_OF_CASES)}` : '';
+  return `${prefix}${count}-all`
 }
 
 function fileNameForCases() {
