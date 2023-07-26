@@ -69,7 +69,7 @@ function generateTableSql(table) {
 }
 
 function generateSchemaSql(schema) {
-  let sql = "SET AUTOCOMMIT = 1;\n\n";
+  let sql = "START TRANSACTION;\n\n";
 
   sql += generateDropTableSql(schema.events);
   sql += generateDropTableSql(schema.cases);
@@ -90,6 +90,7 @@ function generateSchemaSql(schema) {
 
   sql += generateTableSql(schema.cases);
   sql += generateTableSql(schema.events);
+  sql += "COMMIT;";
 
   return sql;
 }
