@@ -14,7 +14,7 @@ async function main() {
   const events = generateEvents(cases);
 
   if (config.SHOW_PROGRESS) {
-    process.stdout.write('\nWriting data to file...');
+    process.stdout.write('Writing data to file...');
   }
 
   if (config.OUTPUT_FORMAT === 'csv') {
