@@ -28,7 +28,7 @@ async function main() {
     );
   }
   if (config.SHOW_PROGRESS) {
-    console.log(' \x1b[32mDone\x1b[0m');
+    console.log(' \x1b[32mCompleted\x1b[0m');
   }
 }
 
