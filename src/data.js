@@ -107,12 +107,12 @@ function generateEvents(cases) {
     if (config.SHOW_PROGRESS && caseNumber % config.PROGRESS_INTERVAL == 0) {
       showProgress(
         (caseNumber / numCases) * 100,
-        (text = "Generating transitions")
+        (text = "Generating events")
       );
     }
   }
   if (config.SHOW_PROGRESS) {
-    showProgress(1 * 100, (text = "Generating transitions"));
+    showProgress(1 * 100, (text = "Generating events"));
     process.stdout.write("\n");
   }
   return transitions;
