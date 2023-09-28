@@ -129,6 +129,12 @@
                     "display_name": "NeedsPostmortem",
                     "type": "varchar(50)",
                     "nullable": true
+                },
+                {
+                    "name": "test_attribute",
+                    "display_name": "TestAttribute",
+                    "type": "varchar(50)",
+                    "nullable": true
                 }
             ]
         },
@@ -782,5 +788,9 @@
         "PO Review": 0.05,
         "Ready for Merge": 0.0,
         "Closed": 0.7
+    },
+    "TEST_ATT": {
+        "test_one": 0.5,
+        "test_two": 0.5
     }
 }

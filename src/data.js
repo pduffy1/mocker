@@ -6,7 +6,16 @@ const { showProgress } = require("./progress");
 
 function generateCases(numCases) {
   const cases = [];
+  const numAttributes = 1;
   let vocabulary = getVocabulary();
+//  test_dict = "test_one": {
+//                      "test_one": 0.5,
+//                      "test_two": 0.5
+//                  }
+
+//  for (let i = 1; i <= numAttributes; i++) {
+//    vocabulary.push(test_dict)
+//  }
 
   for (let i = 1; i <= numCases; i++) {
     const caseRecord = {};
@@ -117,6 +126,12 @@ function generateEvents(cases) {
   }
   return transitions;
 }
+
+//function generateAttribute {
+//    let vocabulary = getVocabulary();
+//
+//    vocabulary.push
+//}
 
 function valueToForeignKey(value, table) {
   const vocabulary = getVocabulary();

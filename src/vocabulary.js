@@ -115,4 +115,6 @@ function getVocabulary() {
   return _vocabulary;
 }
 
+
+
 module.exports = { processVocabulary, getRandomString, getVocabulary };
