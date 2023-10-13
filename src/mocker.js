@@ -39,7 +39,6 @@ function saveToSql(vocabulary, cases, events) {
   writeFile('out/schema.sql', schema);
   combinedFile += schema + '\n\n';
 
-
   //"Lookup data"
   if (vocabulary.data) {
     for (const table in vocabulary.data) {
@@ -64,7 +63,6 @@ function saveToSql(vocabulary, cases, events) {
   const sqlInsertsEvents = generateSqlInsert(events, vocabulary.schema.events);
   writeFile(`out/${fileNameForEvents(events.length)}.sql`, sqlInsertsEvents);
   combinedFile += sqlInsertsEvents + '\n\n';
-
 
   writeFile(`out/${fileNameForCombined()}.sql`, combinedFile);
 }
