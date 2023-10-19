@@ -49,7 +49,7 @@ function generateEvents(cases) {
     caseNumber++;
 
     const vocabulary = getVocabulary();
-    const startDate = faker.date.past({ years: config.TIMEFRAME_IN_YEARS });
+    const startDate = faker.date.past({ months: config.TIMEFRAME_IN_YEARS });
     let currentDate = moment(startDate);
 
     let eventName,
